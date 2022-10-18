@@ -9,6 +9,7 @@
   "author": "Mukesh Bhagat",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^16.0.3",
     "express": "^4.16.2",
     "nodemon": "^1.12.1",
     "socket.io": "^2.0.3"

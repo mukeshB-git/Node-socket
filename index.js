@@ -1,7 +1,8 @@
+require('dotenv').config()
 const app = require('express')();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
-const port = 3000;
+const port = process.env.HOST_PORT;
 
 server.listen(port, () => {
     console.log(`server is listening to port ${port}`)
