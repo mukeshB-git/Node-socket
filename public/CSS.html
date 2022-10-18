@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Chatter</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+    integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+  <style>
+    form {
+      padding: 20px;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      padding-right: 50px;
+    }
+
+    #messages {
+      list-style-type: none;
+      margin: 0;
+      padding: 20px;
+      width: 100%;
+    }
+
+    #messages li {
+      padding: 5px 10px;
+    }
+
+    #messages li:nth-child(odd) {
+      background: #eee;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container-flluid">
+    <div class="row">
+      <ul id="messages"></ul>
+    </div>
+    <div class="row">
+      <div class="col-lg-6">
+        <form action="">
+          <div class="input-group mb-3">
+            <input id="m" type="text" class="form-control" placeholder="message..." aria-label="message..."
+              aria-describedby="button-addon2">
+            <button class="btn btn-outline-secondary" type="submit" id="button-addon2">send</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+    integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+    integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+    crossorigin="anonymous"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const room = 'CSS';
+    const socket = io('/tech');
+    $('form').submit(() => {
+      let msg = $('#m').val();
+      socket.emit('message', { msg, room });
+      $('#m').val('');
+      return false;
+    });
+
+    socket.on('connect', () => {
+      socket.emit('join', { room: room });
+    })
+
+    socket.on('message', (msg) => {
+      $('#messages').append($('<li>').text(msg));
+    })
+  </script>
+</body>
+
+</html>
